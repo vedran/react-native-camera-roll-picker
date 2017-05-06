@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   CameraRoll,
   Platform,
+  Dimensions,
   StyleSheet,
   View,
   Text,
@@ -22,6 +23,13 @@ class CameraRollPicker extends Component {
       noMore: false,
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
     };
+
+
+    if(this.props.renderPlaceholder) {
+      this.state.images = [
+        {isPlaceholder: true}
+      ]
+    }
   }
 
   componentWillMount() {
@@ -127,6 +135,27 @@ class CameraRollPicker extends Component {
       imagesPerRow,
       containerWidth
     } = this.props;
+
+
+    if (item.isPlaceholder) {
+      var {width} = Dimensions.get('window');
+      var {imageMargin, imagesPerRow, containerWidth} = this.props;
+
+      if(typeof containerWidth != "undefined") {
+        width = containerWidth;
+      }
+      let size = (width - (imagesPerRow + 1) * imageMargin) / imagesPerRow;
+
+      return (
+        <View key="placeholder" style={{
+          marginBottom: imageMargin, marginRight: imageMargin,
+          justifyContent: 'center', alignItems: 'center',
+          width: size, height: size
+        }} >
+          {this.props.renderPlaceholder()}
+        </View>
+      )
+    }
 
     var uri = item.node.image.uri;
     var isSelected = (this._arrayObjectIndexOf(selected, 'uri', uri) >= 0) ? true : false;
