@@ -100,8 +100,6 @@ class CameraRollPicker extends Component {
       removeClippedSubviews,
       imageMargin,
       backgroundColor,
-      emptyText,
-      emptyTextStyle,
     } = this.props;
 
     var listViewOrEmptyText = dataSource.getRowCount() > 0 ? (
@@ -116,7 +114,11 @@ class CameraRollPicker extends Component {
         dataSource={dataSource}
         renderRow={rowData => this._renderRow(rowData)} />
     ) : (
-      <Text style={[{textAlign: 'center'}, emptyTextStyle]}>{emptyText}</Text>
+        <ActivityIndicator
+          animating={true}
+          style={{ height: 30, marginTop: 20 }}
+          size="small"
+        />
     );
 
     return (
@@ -191,7 +193,7 @@ class CameraRollPicker extends Component {
 
   _renderFooterSpinner() {
     if (!this.state.noMore) {
-      return <ActivityIndicator style={styles.spinner} />;
+      return <ActivityIndicator animating={true}/>;
     }
     return null;
   }
@@ -320,8 +322,7 @@ CameraRollPicker.defaultProps = {
   callback: function(selectedImages, currentImage) {
     console.log(currentImage);
     console.log(selectedImages);
-  },
-  emptyText: 'No photos.',
+  }
 }
 
 export default CameraRollPicker;
