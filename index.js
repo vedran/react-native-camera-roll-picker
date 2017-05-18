@@ -42,6 +42,16 @@ class CameraRollPicker extends Component {
     });
   }
 
+  addPhoto = (photo) => {
+    let newImages = JSON.parse(JSON.stringify(this.state.images))
+    newImages.unshift(photo)
+
+    this.setState({
+      images: newImages,
+      dataSource: this.state.dataSource.cloneWithRows(this._nEveryRow(newImages, this.props.imagesPerRow))
+    })
+  }
+
   fetch() {
     if (!this.state.loadingMore) {
       this.setState({loadingMore: true}, () => { this._fetch(); });
