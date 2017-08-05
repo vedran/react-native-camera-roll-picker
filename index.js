@@ -52,6 +52,36 @@ class CameraRollPicker extends Component {
     })
   }
 
+  prependUniquePhotos = (photosToInsert) => {
+    console.log({ newphoto: photosToInsert[0] })
+    console.log({ lastPhoto: this.state.images[0] })
+
+    let i = 0;
+
+    if (this.state.images.length > 0) {
+      // Find how many photos to actually insert
+      for (; i < photosToInsert.length; i++) {
+        if (photosToInsert[i].node.image.uri === this.state.images[0].node.image.uri) {
+          break
+        }
+      }
+    } {
+      i = photosToInsert.length
+    }
+
+    if (i === 0) {
+      return
+    }
+
+    let newPhotos = photosToInsert.slice(0, i).concat(this.state.images)
+
+    this.setState({
+      images: newPhotos,
+      dataSource: this.state.dataSource.cloneWithRows(this._nEveryRow(newPhotos, this.props.imagesPerRow))
+    })
+  }
+
+
   fetch() {
     if (!this.state.loadingMore) {
       this.setState({loadingMore: true}, () => { this._fetch(); });
@@ -62,7 +92,7 @@ class CameraRollPicker extends Component {
     var {groupTypes, assetType} = this.props;
 
     var fetchParams = {
-      first: 1000,
+      first: 100,
       groupTypes: groupTypes,
       assetType: assetType,
     };
@@ -336,3 +366,4 @@ CameraRollPicker.defaultProps = {
 }
 
 export default CameraRollPicker;
+
