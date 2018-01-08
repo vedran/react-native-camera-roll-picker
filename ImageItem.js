@@ -21,6 +21,11 @@ class ImageItem extends Component {
     this._imageSize = (width - (imagesPerRow + 1) * imageMargin) / imagesPerRow;
   }
 
+
+  isVideo(uri) {
+      return uri.indexOf('.mov') > -1 || uri.indexOf('.mp4') > -1 || uri.indexOf('.avi') > -1
+  }
+
   render() {
     var {item, selected, selectedMarker, imageMargin} = this.props;
 
@@ -28,6 +33,12 @@ class ImageItem extends Component {
         <Image
           style={[styles.marker, {width: 25, height: 25}]}
           source={require('./circle-check.png')}
+          />;
+
+    var video = <Image
+          resizeMode="contain"
+          style={[styles.video, {width: 25, height: 25}]}
+          source={require('./video.png')}
           />;
 
     var image = item.node.image;
@@ -40,6 +51,7 @@ class ImageItem extends Component {
           source={{uri: image.uri}}
           style={{height: this._imageSize, width: this._imageSize}} >
           { (selected) ? marker : null }
+          { this.isVideo(image.uri) ? video : null }
         </Image>
       </TouchableOpacity>
     );
@@ -55,6 +67,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     right: 5,
+    backgroundColor: 'transparent',
+  },
+  movie: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
     backgroundColor: 'transparent',
   },
 })
