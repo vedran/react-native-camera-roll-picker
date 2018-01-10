@@ -23,7 +23,8 @@ class ImageItem extends Component {
 
 
   isVideo(uri) {
-      return uri.indexOf('.mov') > -1 || uri.indexOf('.mp4') > -1 || uri.indexOf('.avi') > -1
+      let lowered = uri.ToLowercase()
+      return lowered.indexOf('.mov') > -1 || lowered.indexOf('.mp4') > -1 || lowered.indexOf('.avi') > -1
   }
 
   render() {
